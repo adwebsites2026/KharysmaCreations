@@ -675,10 +675,6 @@ footer li{ margin-bottom:8px; }
         <input type="range" id="deposit-slider" min="10" max="150" step="5" value="50">
         <div class="range-caps"><span>$10</span><span>$150</span></div>
 
-        <div class="pay-methods">
-          <a class="pay-btn" href="#" id="zelle-btn">Pay with Zelle</a>
-          <a class="pay-btn" href="#" id="cashapp-btn">Pay with Cash App</a>
-        </div>
         <button class="btn btn-primary confirm-btn" id="confirm-deposit">Confirm &amp; Notify Us</button>
         <p class="deposit-fine">After paying, tap "Confirm" so we can match your deposit to your order. Prefer to talk first? Call 336-926-9790.</p>
       </div>
@@ -820,14 +816,6 @@ slider.addEventListener('input', () => {
 });
 renderBouquet(Number(slider.value));
 
-document.getElementById('zelle-btn').addEventListener('click', (e) => {
-  e.preventDefault();
-  alert('Zelle: send your deposit to 336-926-9790, then tap "Confirm & Notify Us" below.');
-});
-document.getElementById('cashapp-btn').addEventListener('click', (e) => {
-  e.preventDefault();
-  alert('Cash App: $KharysmaCreations (update with your real $Cashtag), then tap "Confirm & Notify Us" below.');
-});
 document.getElementById('confirm-deposit').addEventListener('click', () => {
   const amount = amountDisplay.textContent;
   const subject = encodeURIComponent(`Deposit Sent — $${amount}`);
