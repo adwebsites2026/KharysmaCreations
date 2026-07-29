@@ -586,7 +586,7 @@ footer li{ margin-bottom:8px; }
       <p>Share the occasion, the date, and a rough budget — we'll follow up with options and pricing.</p>
     </div>
     <div class="form-wrap">
-      <form id="inquiry-form">
+      <form id="inquiry-form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field"><p style="display:none"><label>Don't fill this out if you're human: <input name="bot-field"></label></p><input type="hidden" name="form-name" value="inquiry">
         <div class="form-grid">
           <div>
             <label for="name">Your Name</label>
@@ -638,7 +638,7 @@ footer li{ margin-bottom:8px; }
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Send Inquiry</button>
-          <span class="form-note">Opens your email app with everything filled in — nothing sends without your OK.</span>
+          <span class="form-note">We'll get back to you within 1-2 business days.</span>
         </div>
       </form>
 
@@ -769,33 +769,23 @@ document.querySelectorAll('.quote-btn').forEach(btn => {
   });
 });
 
-// ---- Inquiry form -> mailto ----
-document.getElementById('inquiry-form').addEventListener('submit', function(e){
-  e.preventDefault();
-  const f = e.target;
-  const data = {
-    name: f.name.value, phone: f.phone.value, email: f.email.value,
-    occasion: f.occasion.value, service: f.service.value || 'Not specified',
-    date: f.date.value || 'Not specified', budget: f.budget.value,
-    details: f.details.value || 'None provided'
-  };
-  const subject = encodeURIComponent(`New Gift Inquiry — ${data.occasion} (${data.service})`);
-  const body = encodeURIComponent(
-`New inquiry from the Kharysma Creations website:
-
-Name: ${data.name}
-Phone: ${data.phone}
-Email: ${data.email}
-Occasion: ${data.occasion}
-Interested In: ${data.service}
-Needed By: ${data.date}
-Budget: ${data.budget}
-
-Details:
-${data.details}`
-  );
-  window.location.href = `mailto:KharysmaCreations@gmail.com?subject=${subject}&body=${body}`;
-});
+// ---- Inquiry form -> Netlify Forms ----
+  document.getElementById('inquiry-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data).toString()
+      })
+      .then(() => {
+            form.innerHTML = '<p class="form-note">Thanks! Your inquiry has been sent - we will be in touch soon.</p>';
+      })
+      .catch(() => {
+            alert('Sorry, something went wrong sending your inquiry. Please call or text 336-926-9790.');
+      });
+  });
 
 // ---- Deposit: money bouquet builder ----
 const slider = document.getElementById('deposit-slider');
